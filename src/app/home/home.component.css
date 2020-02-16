@@ -1,0 +1,9 @@
+.sort-icon{
+    padding-left: 5px;
+    color: #fd7e14;
+}
+
+table {
+    table-layout: fixed;
+    word-wrap: break-word;
+}

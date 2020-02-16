@@ -1,0 +1,142 @@
+<div class="row">
+	<div class="col-sm-12 col-md-12 col-lg-12">
+		<div class="page-header">
+			<h2>
+				<span>Movie App</span>
+				<span class="fa fa-tasks" style="padding-left:5px;" aria-hidden="true"></span>
+			</h2>
+		</div>
+	</div>
+</div>
+<div>
+  
+	<div class="row">
+		<div class="col-sm-12 col-md-12 col-lg-12">
+			<div class="row">
+				<div class="col sm-6 col-md-6 col-lg-6">
+					<form class="form-inline">
+						<div class="form-group">
+							<label for="search" style="padding-right:10px;">Search By Movie Title :</label>
+							<input class="form-control no-radius no-shadow" type="text" id="search" name="searchText" [(ngModel)]="searchText">
+           </div>
+           		<div class="form-group" style="padding-left:5%;">
+							<label for="search" style="padding-right:10px;">Filter By Genres:</label>
+							<select class="form-control no-radius no-shadow" [(ngModel)]="nrSelect" name="nrSelect" id="search-2">
+                <option value="Action">Action</option>
+                <option value="Adventure">Adventure</option>
+                <option value="Fantasy">Fantasy</option>
+                <option value="Sci-Fi">Sci-Fi</option>
+                <option value="Thriller">Thriller</option>
+                <option value="Mystery">Mystery</option>
+                <option value="Fantasy">Fantasy</option>
+              </select>
+           </div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<br>
+<div class="row">
+	<div class="col-sm-12 col-md-12 col-lg-12">
+		<div class="table-responsive" style="height:450px;over-flow;:scroll">
+			<table class="table table-condensed table-hover">
+				<thead>
+					<tr>
+						<th (click)="sortData('movie_title')" class="col-md-2 col-sm-2 col-lg-2">
+							<span>Movie Title</span>
+							<span [ngClass]="getSortClass('movie_title')" class="sort-icon fa" aria-hidden="true"></span>
+						</th>
+						<th (click)="sortData('director_name')" class="col-md-2 col-sm-2 col-lg-2">
+							<span>Director Name</span>
+							<span [ngClass]="getSortClass('director_name')" class="sort-icon fa" aria-hidden="true"></span>
+						</th>
+						<th (click)="sortData('actor_1_name')" class="col-md-2 col-sm-2 col-lg-2">
+							<span>Actor 1 Name</span>
+							<span [ngClass]="getSortClass('actor_1_name')" class="sort-icon fa" aria-hidden="true"></span>
+						</th>
+						<th (click)="sortData('actor_2_name')" class="col-md-2 col-sm-2 col-lg-2">
+							<span>Actor 2 Name</span>
+							<span [ngClass]="getSortClass('actor_2_name')" class="sort-icon fa" aria-hidden="true"></span>
+						</th>
+						<th (click)="sortData('genres')" class="col-md-2 col-sm-2 col-lg-2">
+							<span>Genres</span>
+							<span [ngClass]="getSortClass('genres')" class="sort-icon fa" aria-hidden="true"></span>
+						</th>
+						<th (click)="sortData('language')" class="col-md-2 col-sm-2 col-lg-2">
+							<span>Language</span>
+							<span [ngClass]="getSortClass('language')" class="sort-icon fa" aria-hidden="true"></span>
+						</th>
+						<th (click)="sortData('country')" class="col-md-2 col-sm-2 col-lg-2">
+							<span>Country</span>
+							<span [ngClass]="getSortClass('country')" class="sort-icon fa" aria-hidden="true"></span>
+						</th>
+						<th (click)="sortData('content_rating')" class="col-md-2 col-sm-2 col-lg-2">
+							<span>Content Rating</span>
+							<span [ngClass]="getSortClass('content_rating')" class="sort-icon fa" aria-hidden="true"></span>
+						</th>
+						<th (click)="sortData('budget')" class="col-md-2 col-sm-2 col-lg-2">
+							<span>Budget</span>
+							<span [ngClass]="getSortClass('budget')" class="sort-icon fa" aria-hidden="true"></span>
+						</th>
+						<th (click)="sortData('title_year')" class="col-md-2 col-sm-2 col-lg-2">
+							<span>Title Year</span>
+							<span [ngClass]="getSortClass('title_year')" class="sort-icon fa" aria-hidden="true"></span>
+						</th>
+						<th (click)="sortData('plot_keywords')" class="col-md-2 col-sm-2 col-lg-2">
+							<span>Plot Keywords</span>
+							<span [ngClass]="getSortClass('plot_keywords')" class="sort-icon fa" aria-hidden="true"></span>
+						</th>
+						<th (click)="sortData('movie_imdb_link')" class="col-md-2 col-sm-2 col-lg-2">
+							<span>Movie IMDB Link</span>
+							<span [ngClass]="getSortClass('movie_imdb_link')" class="sort-icon fa" aria-hidden="true"></span>
+						</th>
+					</tr>
+				</thead>
+				<ng-container *ngIf="movies$ | async | tableFilter : searchText:'movie_title'| tableFilter : nrSelect:'genres';let items;">
+					<tbody>
+						<ng-container *ngIf="items.length>0;else (searchText?.length ? noMatches : noData)">
+							<tr *ngFor="let task of items | tableSort :direction:prop;trackBy:trackById;">
+								<td style="width:10%">{{task.movie_title}}</td>
+								<td>{{task.director_name}}</td>
+								<td>{{task.actor_1_name}}</td>
+								<td>{{task.actor_2_name}}</td>
+								<td>{{task.genres}}</td>
+								<td>{{task.language}}</td>
+								<td>{{task.country}}</td>
+								<td>{{task.content_rating}}</td>
+								<td>{{task.budget | CustomeCurrency}}</td>
+								<td>{{task.title_year}}</td>
+								<td>{{task.plot_keywords}}</td>
+								<td>{{task.movie_imdb_link}}</td>
+							</tr>
+						</ng-container>
+						<ng-template #noData>
+							<tr>
+								<td colspan="8" style="text-align:center">
+									No records found.
+								</td>
+							</tr>
+						</ng-template>
+						<ng-template #noMatches>
+							<tr>
+								<td colspan="8" style="text-align:center">
+									No matching records found.
+								</td>
+							</tr>
+						</ng-template>
+					</tbody>
+					<tfoot>
+						<tr>
+							<td colspan="8" style="text-align:left">
+								<span style="padding:right:5px;font-weight:bold;">Total Records:</span>
+								{{items?.length || 0}}
+							</td>
+						</tr>
+					</tfoot>
+				</ng-container>
+			</table>
+		</div>
+	</div>
+</div>
